@@ -17,11 +17,11 @@ public:
 
 	Vertex(const ConstructionToken &);
 
-	const std::vector<int> copy_edges() const;
-	void insert_edge(const int&);
-	void insert_edge(const int&, float weight);
-	void remove_edge(const int&);
-	float get_weight(int);
+	const std::vector<std::string> copy_edges() const;
+	void insert_edge(const std::string&);
+	void insert_edge(const std::string&, float weight);
+	void remove_edge(const std::string&);
+	float get_weight(std::string);
 private:
-	std::map<int, Edge> edges;
+	std::map<std::string, Edge> edges;
 };

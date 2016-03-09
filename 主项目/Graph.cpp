@@ -3,46 +3,18 @@
 #include <string>
 #include <utility>
 #include <fstream>
+#include <queue>
+#include <algorithm>
 #include "Graph.h"
 #include "Vertex.h"
 #include "Edge.h"
 #include "Helper.h"
 
-void Graph::insert_vertex(int id)
+void Graph::insert_vertex(std::string id)
 {
 	Vertex::ConstructionToken c;
 	Vertex v{ c };
 	insert_vertex(id, v);
-}
-
-void Graph::insert_vertexes(int n)
-{
-	if (n < 0)
-	{
-		std::cout << "error:参数不合法（参数应该为大于0的整数）" << std::endl;
-		return;
-	}
-	for (int i = 0; i <= n; i++)
-	{
-		Vertex::ConstructionToken c;
-		Vertex v{ c };
-		insert_vertex(i, v);
-	}
-}
-
-void Graph::insert_vertexes(int n, int m)
-{
-	if (n < 0 || m < 0 || n > m)
-	{
-		std::cout << "error:参数不合法" << std::endl;
-		return;
-	}
-	for (int i = n; i <= m; i++)
-	{
-		Vertex::ConstructionToken c;
-		Vertex v{ c };
-		insert_vertex(i, v);
-	}
 }
 
 int Graph::get_vertex_number()
@@ -50,42 +22,35 @@ int Graph::get_vertex_number()
 	return vertexes.size();
 }
 
-void Graph::insert_vertex(int id, Vertex v)
+void Graph::insert_vertex(std::string id, Vertex v)
 {
-	std::pair<int, Vertex> temp(id, v);
+	std::pair<std::string, Vertex> temp(id, v);
 	vertexes.insert(temp);
 }
 
-void Graph::insert_edge(int node, int new_edge)
+void Graph::insert_edge(std::string node, std::string new_edge)
 {
 	if (node == new_edge)
 		return;
-	//检查节点是否存在
-	auto it = vertexes.find(node);
-	if (it == vertexes.end())
-	{
-		//节点不存在的话，插入新节点
-		this->insert_vertex(node);
-		auto it1 = vertexes.find(node);
-		//检查目的节点是否存在，否则插入新节点
-		this->insert_vertex(new_edge);
-		it1->second.insert_edge(new_edge);
-		return;
-	}
-	it->second.insert_edge(new_edge);
+	//节点不存在的话，插入新节点
+	this->insert_vertex(node);
+	auto it1 = vertexes.find(node);
+	//检查目的节点是否存在，否则插入新节点
+	this->insert_vertex(new_edge);
+	it1->second.insert_edge(new_edge);
 }
 
-void Graph::insert_edge(int node, int new_edge, float weight)
+void Graph::insert_edge(std::string node, std::string new_edge, float weight)
 {
 	if (node == new_edge)
 		return;
+	this->insert_vertex(node);
+	this->insert_vertex(new_edge);
 	auto it = vertexes.find(node);
-	if (it == vertexes.end())
-		return;
 	it->second.insert_edge(new_edge,weight);
 }
 
-void Graph::remove_edge(int node, int edge)
+void Graph::remove_edge(std::string node, std::string edge)
 {
 	auto it = vertexes.find(node);
 	if (it == vertexes.end())
@@ -96,7 +61,7 @@ void Graph::remove_edge(int node, int edge)
 //重载输出流，用于打印输出图
 std::ostream& operator<<(std::ostream& out, const Graph& g)
 {
-	std::vector<int> end_points;
+	std::vector<std::string> end_points;
 	for (auto& pair : g.vertexes)
 	{
 		end_points = pair.second.copy_edges();
@@ -112,7 +77,7 @@ std::ostream& operator<<(std::ostream& out, const Graph& g)
 
 void Graph::print_graph() const
 {
-	std::vector<int> end_points;
+	std::vector<std::string> end_points;
 	for (auto& pair : vertexes)
 	{
 		end_points = pair.second.copy_edges();
@@ -140,17 +105,17 @@ void Graph::read_adjacency_list(std::string file)
 		const int size = elems.size();
 		if (size > 0)
 		{
-			int from = std::stoi(elems[0]);
+			std::string& from = elems[0];
 			for (int i = 1; i < size; i++)
 			{
-				int to = std::stoi(elems[i]);
+				std::string& to = elems[i];
 				this->insert_edge(from, to);
 			}
 		}
 	}
 }
 
-float Graph::get_weight(int from, int to)
+float Graph::get_weight(std::string from, std::string to)
 {
 	if (from == to)
 		return 0.0f;
@@ -163,4 +128,48 @@ float Graph::get_weight(int from, int to)
 void print_graph(const Graph& G)
 {
 	G.print_graph();
+}
+
+//BFS算法实现
+void Graph::bfs(std::string from, std::string to)
+{
+	if (from == to)
+		return;
+	std::map<std::string,std::string> flaged;
+	std::queue<std::string> queue;
+	std::pair<std::string, std::string> temp(from, "");
+	flaged.insert(temp);
+	queue.push(from);
+	while (!queue.empty())
+	{
+		auto it = queue.front();
+		queue.pop();
+		auto current_vertex = vertexes.find(it);
+		auto sub_vertexes = current_vertex->second.copy_edges();
+		for (unsigned int i = 0; i < sub_vertexes.size(); i++)
+		{
+			auto item = sub_vertexes[i];
+			if (item == to)
+			{
+				std::string temp = it;
+				std::cout << to << "<-";
+				while (temp != from)
+				{
+					std::cout << temp << "<-";
+					temp = flaged[temp];
+				}
+				std::cout << from << std::endl;
+				return;
+			}
+
+			if (flaged.find(item) != flaged.end())
+				continue;
+			else
+			{
+				std::pair<std::string, std::string> temp(item, it);
+				flaged.insert(temp);
+				queue.push(item);
+			}
+		}
+	}
 }
