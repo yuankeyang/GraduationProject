@@ -9,12 +9,12 @@ Edge::Edge(const ConstructionToken &)
 	set_weight(-1);
 }
 
-void Edge::set_weight(float w)
+void Edge::set_weight(EDGE_DATE_TYPE w)
 {
 	weight = w;
 }
 
-float Edge::get_weight()
+EDGE_DATE_TYPE Edge::get_weight()
 {
 	return weight;
 }

@@ -4,11 +4,25 @@
 #include <utility>
 #include <fstream>
 #include <queue>
-#include <algorithm>
+#include <cstdlib>
+#include <ctime>
 #include "Graph.h"
 #include "Vertex.h"
 #include "Edge.h"
 #include "Helper.h"
+
+#define random(x) (rand() % x)
+
+Graph::Graph()
+{
+	edges = 0;
+	directed = true;
+}
+
+Graph::Graph(bool is_directed)
+{
+	directed = is_directed;
+}
 
 void Graph::insert_vertex(std::string id)
 {
@@ -37,17 +51,32 @@ void Graph::insert_edge(std::string node, std::string new_edge)
 	auto it1 = vertexes.find(node);
 	//检查目的节点是否存在，否则插入新节点
 	this->insert_vertex(new_edge);
-	it1->second.insert_edge(new_edge);
+	std::pair<std::map<std::string, Edge>::iterator, bool> ret = it1->second.insert_edge(new_edge);
+	//如果是无向图
+	if (!directed) 
+	{
+		auto it2 = vertexes.find(new_edge);
+		ret = it2->second.insert_edge(node);
+	}
+	if (!ret.second)
+		edges += 1;
 }
 
-void Graph::insert_edge(std::string node, std::string new_edge, float weight)
+void Graph::insert_edge(std::string node, std::string new_edge, EDGE_DATE_TYPE weight)
 {
 	if (node == new_edge)
 		return;
 	this->insert_vertex(node);
 	this->insert_vertex(new_edge);
 	auto it = vertexes.find(node);
-	it->second.insert_edge(new_edge,weight);
+	std::pair<std::map<std::string, Edge>::iterator, bool> ret = it->second.insert_edge(new_edge,weight);
+	if (!directed)
+	{
+		auto it1 = vertexes.find(new_edge);
+		ret = it1->second.insert_edge(node,weight);
+	}
+	if (ret.second)
+		edges += 1;
 }
 
 void Graph::remove_edge(std::string node, std::string edge)
@@ -56,6 +85,7 @@ void Graph::remove_edge(std::string node, std::string edge)
 	if (it == vertexes.end())
 		return;
 	it->second.remove_edge(edge);
+	edges -= 1;
 }
 
 //重载输出流，用于打印输出图
@@ -91,10 +121,11 @@ void Graph::print_graph() const
 }
 
 //从邻接表文件创建图，邻接表文件中可以以'#'添加注释行
-void Graph::read_adjacency_list(std::string file)
+void Graph::read_adjacency_list_rel(std::string file)
 {
 	std::ifstream ifs(file);
 	std::string str;
+	srand((int)time(0));
 	while (std::getline(ifs, str))
 	{
 		if (str.at(0) == '#')
@@ -109,16 +140,18 @@ void Graph::read_adjacency_list(std::string file)
 			for (int i = 1; i < size; i++)
 			{
 				std::string& to = elems[i];
-				this->insert_edge(from, to);
+				EDGE_DATE_TYPE weight = random(100);
+				this->insert_edge(from, to, weight);
+				printf("insert edge(%s, %s), weight(%d)\n", from.c_str(), to.c_str(), weight);
 			}
 		}
 	}
 }
 
-float Graph::get_weight(std::string from, std::string to)
+EDGE_DATE_TYPE Graph::get_weight(std::string from, std::string to)
 {
 	if (from == to)
-		return 0.0f;
+		return 0;
 	auto it = vertexes.find(from);
 	if (it == vertexes.end())
 		return -1;
@@ -131,10 +164,10 @@ void print_graph(const Graph& G)
 }
 
 //BFS算法实现
-void Graph::bfs(std::string from, std::string to)
+EDGE_DATE_TYPE Graph::bfs(std::string from, std::string to)
 {
 	if (from == to)
-		return;
+		return 0;
 	std::map<std::string,std::string> flaged;
 	std::queue<std::string> queue;
 	std::pair<std::string, std::string> temp(from, "");
@@ -152,14 +185,20 @@ void Graph::bfs(std::string from, std::string to)
 			if (item == to)
 			{
 				std::string temp = it;
-				std::cout << to << "<-";
+				EDGE_DATE_TYPE temp_weight = get_weight(temp, to);
+				std::cout << to << "<-(" << temp_weight << ")-";
+				EDGE_DATE_TYPE weight = 0;
+				weight += temp_weight;
 				while (temp != from)
 				{
-					std::cout << temp << "<-";
-					temp = flaged[temp];
+					std::string next = flaged[temp];
+					temp_weight = get_weight(next, temp);
+					std::cout << temp << "<-(" << temp_weight << ")-";
+					weight += temp_weight;
+					temp = next;
 				}
 				std::cout << from << std::endl;
-				return;
+				return weight;
 			}
 
 			if (flaged.find(item) != flaged.end())
@@ -172,4 +211,10 @@ void Graph::bfs(std::string from, std::string to)
 			}
 		}
 	}
+	return -1;
+}
+
+int Graph::get_edges()
+{
+	return edges;
 }

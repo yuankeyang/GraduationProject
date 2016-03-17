@@ -1,5 +1,6 @@
 #pragma once
 
+typedef int EDGE_DATE_TYPE;
 
 class Edge
 {
@@ -14,8 +15,8 @@ public:
 	Edge(const Edge &);
 	Edge(const ConstructionToken &);
 
-	void set_weight(float);
-	float get_weight();
+	void set_weight(EDGE_DATE_TYPE);
+	EDGE_DATE_TYPE get_weight();
 private:
-	float weight;
+	EDGE_DATE_TYPE weight;
 };
