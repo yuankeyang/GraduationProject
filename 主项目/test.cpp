@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Graph.h"
+#include "Algorithm.h"
 
 int main(int argc, char* argv[])
 {
@@ -11,5 +12,11 @@ int main(int argc, char* argv[])
 	std::cout << "edge(0, 50)µÄweightÊÇ£º" << g1.get_weight("0", "50") << std::endl;
 	printf("d(4020, 4032) = %d\n", g1.bfs("4020", "4032"));
 	printf("d(4032, 4020) = %d\n", g1.bfs("4032", "4020"));
+	Algorithm al(g1);
+	SAMPLE sample = al.offline_sample("4020");
+	for (D item : sample) {
+		std::cout << "d(" << item.second << ", "
+			<< item.first << ")" << std::endl;
+	}
 	return 0;
 }
