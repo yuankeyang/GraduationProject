@@ -8,8 +8,8 @@
 #include <cmath>
 #include <random>
 #include "Graph.h"
-typedef std::pair<int, std::string> D;
-typedef std::set<D> SAMPLE;
+typedef std::pair<std::string, int> D;
+typedef std::vector<D> SAMPLE;
 typedef int DISTANCE;
 class Algorithm
 {
@@ -21,6 +21,7 @@ public:
 	SAMPLE offline_sketch();
 	//估计结点u到v的距离
 	DISTANCE online_common_seed(std::string u, std::string v);
+	std::string sample_to_string(SAMPLE& sample);
 private:
 	void generate_seeds(int r, int vertexes);
 private:

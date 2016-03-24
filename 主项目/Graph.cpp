@@ -21,6 +21,7 @@ Graph::Graph()
 
 Graph::Graph(bool is_directed)
 {
+	edges = 0;
 	directed = is_directed;
 }
 
@@ -61,7 +62,7 @@ void Graph::insert_edge(std::string node, std::string new_edge)
 	if (!ret.second)
 		edges += 1;
 }
-
+/*插入边*/
 void Graph::insert_edge(std::string node, std::string new_edge, EDGE_DATE_TYPE weight)
 {
 	if (node == new_edge)
@@ -78,7 +79,7 @@ void Graph::insert_edge(std::string node, std::string new_edge, EDGE_DATE_TYPE w
 	if (ret.second)
 		edges += 1;
 }
-
+/*移除边*/
 void Graph::remove_edge(std::string node, std::string edge)
 {
 	auto it = vertexes.find(node);
@@ -88,7 +89,7 @@ void Graph::remove_edge(std::string node, std::string edge)
 	edges -= 1;
 }
 
-//重载输出流，用于打印输出图
+/*载输出流，用于打印输出图*/
 std::ostream& operator<<(std::ostream& out, const Graph& g)
 {
 	std::vector<std::string> end_points;
@@ -104,7 +105,7 @@ std::ostream& operator<<(std::ostream& out, const Graph& g)
 	}
 	return out;
 }
-
+/*打印图*/
 void Graph::print_graph() const
 {
 	std::vector<std::string> end_points;
@@ -120,7 +121,7 @@ void Graph::print_graph() const
 	}
 }
 
-//从邻接表文件创建图，邻接表文件中可以以'#'添加注释行
+/*从邻接表文件创建图，邻接表文件中可以以'#'添加注释行*/
 void Graph::read_adjacency_list_rel(std::string file)
 {
 	std::ifstream ifs(file);
@@ -147,7 +148,7 @@ void Graph::read_adjacency_list_rel(std::string file)
 		}
 	}
 }
-
+/*获取边的权*/
 EDGE_DATE_TYPE Graph::get_weight(std::string from, std::string to)
 {
 	if (from == to)
@@ -186,7 +187,8 @@ EDGE_DATE_TYPE Graph::bfs(std::string from, std::string to)
 			{
 				std::string temp = it;
 				EDGE_DATE_TYPE temp_weight = get_weight(temp, to);
-				std::cout << to << "<-(" << temp_weight << ")-";
+				std::cout << "bfs(" << from << ", " << to << "):" 
+					<< to << "<-(" << temp_weight << ")-";
 				EDGE_DATE_TYPE weight = 0;
 				weight += temp_weight;
 				while (temp != from)
@@ -217,4 +219,14 @@ EDGE_DATE_TYPE Graph::bfs(std::string from, std::string to)
 int Graph::get_edges()
 {
 	return edges;
+}
+
+Graph::ITR Graph::begin()
+{
+	return this->vertexes.begin();
+}
+
+Graph::ITR Graph::end()
+{
+	return this->vertexes.end();
 }

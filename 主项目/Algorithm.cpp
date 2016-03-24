@@ -19,15 +19,17 @@ SAMPLE Algorithm::offline_sample(std::string vertex)
 	int vertexes = g.get_vertex_number();
 	this->r = (int)floor(log2(vertexes));
 	generate_seeds(this->r, vertexes);
-	for (int i = 1; i < r + 1; i++)
+	assert(seeds[0].size() == 1);
+	for (int i = 0; i < r + 1; i++)
 	{
 		//For each node u, for all these sets Si, compute (wi, ¦Äi)
-		assert(seeds[0].size() == 1);
-		std::string min_node = std::to_string(*seeds[0].begin());
+		std::set<int>::iterator it = seeds[i].begin();
+		std::string min_node = std::to_string(*it);
 		int min = g.bfs(vertex, min_node);
-		for (int item : seeds[i])
+
+		for (++it; it != seeds[i].end(); it++)
 		{
-			std::string node = std::to_string(item);
+			std::string node = std::to_string(*it);
 			int distance = g.bfs(vertex, node);
 			if (min > distance)
 			{
@@ -35,8 +37,11 @@ SAMPLE Algorithm::offline_sample(std::string vertex)
 				min_node = node;
 			}
 		}
-		D* d = new D(min, min_node);
-		sample_vertex.insert(*d);
+		D* d = new D(min_node, min);
+
+		std::cout << "d" << i <<"(" << min_node << ", "
+			<< min << ")" << std::endl;
+		sample_vertex.push_back(*d);
 	}
 	return sample_vertex;
 }
@@ -49,6 +54,20 @@ SAMPLE Algorithm::offline_sketch()
 DISTANCE Algorithm::online_common_seed(std::string u, std::string v)
 {
 	return DISTANCE();
+}
+
+std::string Algorithm::sample_to_string(SAMPLE& sample)
+{
+	std::string str = "";
+	for (SAMPLE::iterator it = sample.begin(); it != sample.end(); it++)
+	{
+		str.append((*it).first);
+		str.append(",");
+		str.append(std::to_string((*it).second));
+		str.append(" ");
+	}
+	str.append("\n");
+	return str;
 }
 
 void Algorithm::generate_seeds(int r, int vertexes)
