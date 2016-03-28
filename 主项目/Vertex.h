@@ -1,7 +1,7 @@
 #pragma once
-
+#define _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS 1
 #include <iterator>
-#include <map>
+#include <boost/unordered_map.hpp>
 #include <vector>
 #include "Edge.h"
 
@@ -18,10 +18,10 @@ public:
 	Vertex(const ConstructionToken &);
 
 	const std::vector<std::string> copy_edges() const;
-	std::pair<std::map<std::string, Edge>::iterator, bool> insert_edge(const std::string&);
-	std::pair<std::map<std::string, Edge>::iterator, bool> insert_edge(const std::string&, EDGE_DATE_TYPE weight);
+	std::pair<boost::unordered_map<std::string, Edge>::iterator, bool> insert_edge(const std::string&);
+	std::pair<boost::unordered_map<std::string, Edge>::iterator, bool> insert_edge(const std::string&, EDGE_DATE_TYPE& weight);
 	void remove_edge(const std::string&);
-	EDGE_DATE_TYPE get_weight(std::string);
+	EDGE_DATE_TYPE get_weight(std::string&);
 private:
-	std::map<std::string, Edge> edges;
+	boost::unordered_map<std::string, Edge> edges;
 };

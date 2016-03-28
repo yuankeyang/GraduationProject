@@ -1,5 +1,4 @@
 #include <iostream>
-#include <map>
 #include <string>
 #include <utility>
 #include <fstream>
@@ -25,7 +24,7 @@ Graph::Graph(bool is_directed)
 	directed = is_directed;
 }
 
-void Graph::insert_vertex(std::string id)
+void Graph::insert_vertex(std::string& id)
 {
 	Vertex::ConstructionToken c;
 	Vertex v{ c };
@@ -37,13 +36,13 @@ int Graph::get_vertex_number()
 	return vertexes.size();
 }
 
-void Graph::insert_vertex(std::string id, Vertex v)
+void Graph::insert_vertex(std::string& id, Vertex& v)
 {
 	std::pair<std::string, Vertex> temp(id, v);
 	vertexes.insert(temp);
 }
 
-void Graph::insert_edge(std::string node, std::string new_edge)
+void Graph::insert_edge(std::string& node, std::string& new_edge)
 {
 	if (node == new_edge)
 		return;
@@ -52,7 +51,7 @@ void Graph::insert_edge(std::string node, std::string new_edge)
 	auto it1 = vertexes.find(node);
 	//检查目的节点是否存在，否则插入新节点
 	this->insert_vertex(new_edge);
-	std::pair<std::map<std::string, Edge>::iterator, bool> ret = it1->second.insert_edge(new_edge);
+	std::pair<boost::unordered_map<std::string, Edge>::iterator, bool> ret = it1->second.insert_edge(new_edge);
 	//如果是无向图
 	if (!directed) 
 	{
@@ -63,14 +62,14 @@ void Graph::insert_edge(std::string node, std::string new_edge)
 		edges += 1;
 }
 /*插入边*/
-void Graph::insert_edge(std::string node, std::string new_edge, EDGE_DATE_TYPE weight)
+void Graph::insert_edge(std::string& node, std::string& new_edge, EDGE_DATE_TYPE& weight)
 {
 	if (node == new_edge)
 		return;
 	this->insert_vertex(node);
 	this->insert_vertex(new_edge);
 	auto it = vertexes.find(node);
-	std::pair<std::map<std::string, Edge>::iterator, bool> ret = it->second.insert_edge(new_edge,weight);
+	std::pair<boost::unordered_map<std::string, Edge>::iterator, bool> ret = it->second.insert_edge(new_edge,weight);
 	if (!directed)
 	{
 		auto it1 = vertexes.find(new_edge);
@@ -80,7 +79,7 @@ void Graph::insert_edge(std::string node, std::string new_edge, EDGE_DATE_TYPE w
 		edges += 1;
 }
 /*移除边*/
-void Graph::remove_edge(std::string node, std::string edge)
+void Graph::remove_edge(std::string& node, std::string& edge)
 {
 	auto it = vertexes.find(node);
 	if (it == vertexes.end())
@@ -122,7 +121,7 @@ void Graph::print_graph() const
 }
 
 /*从邻接表文件创建图，邻接表文件中可以以'#'添加注释行*/
-void Graph::read_adjacency_list_rel(std::string file)
+void Graph::read_adjacency_list_rel(std::string& file)
 {
 	std::ifstream ifs(file);
 	std::string str;
@@ -149,7 +148,7 @@ void Graph::read_adjacency_list_rel(std::string file)
 	}
 }
 /*获取边的权*/
-EDGE_DATE_TYPE Graph::get_weight(std::string from, std::string to)
+EDGE_DATE_TYPE Graph::get_weight(std::string& from, std::string& to)
 {
 	if (from == to)
 		return 0;
@@ -165,11 +164,11 @@ void print_graph(const Graph& G)
 }
 
 //BFS算法实现
-EDGE_DATE_TYPE Graph::bfs(std::string from, std::string to)
+EDGE_DATE_TYPE Graph::bfs(std::string& from, std::string& to)
 {
 	if (from == to)
 		return 0;
-	std::map<std::string,std::string> flaged;
+	boost::unordered_map<std::string,std::string> flaged;
 	std::queue<std::string> queue;
 	std::pair<std::string, std::string> temp(from, "");
 	flaged.insert(temp);
