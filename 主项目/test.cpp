@@ -22,8 +22,8 @@ int main(int argc, char* argv[])
 	if (ofs.is_open())
 	{
 		ofs.clear();
-		SAMPLE sample = al.offline_sample("4020");
-		ofs << "4020" << " ";
+		SAMPLE sample = al.offline_sample(100);
+		ofs << "100" << " ";
 		ofs << al.sample_to_string(sample);
 		/*
 		for (Graph::ITR it = g1.begin(); it != g1.end(); it++) {

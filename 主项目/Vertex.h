@@ -4,10 +4,11 @@
 #include <boost/unordered_map.hpp>
 #include <vector>
 #include "Edge.h"
-
+typedef int VERTEXTYPE;
 class Vertex
 {
 public:
+	
 	class ConstructionToken
 	{
 	private:
@@ -17,11 +18,11 @@ public:
 
 	Vertex(const ConstructionToken &);
 
-	const std::vector<std::string> copy_edges() const;
-	std::pair<boost::unordered_map<std::string, Edge>::iterator, bool> insert_edge(const std::string&);
-	std::pair<boost::unordered_map<std::string, Edge>::iterator, bool> insert_edge(const std::string&, EDGE_DATE_TYPE& weight);
-	void remove_edge(const std::string&);
-	EDGE_DATE_TYPE get_weight(std::string&);
+	const std::vector<VERTEXTYPE> copy_edges() const;
+	std::pair<boost::unordered_map<VERTEXTYPE, Edge>::iterator, bool> insert_edge(const VERTEXTYPE&);
+	std::pair<boost::unordered_map<VERTEXTYPE, Edge>::iterator, bool> insert_edge(const VERTEXTYPE&, EDGE_DATE_TYPE& weight);
+	void remove_edge(const VERTEXTYPE&);
+	EDGE_DATE_TYPE get_weight(VERTEXTYPE&);
 private:
-	boost::unordered_map<std::string, Edge> edges;
+	boost::unordered_map<VERTEXTYPE, Edge> edges;
 };

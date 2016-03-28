@@ -13,10 +13,10 @@ Algorithm::~Algorithm()
 {
 }
 
-SAMPLE Algorithm::offline_sample(std::string vertex)
+SAMPLE Algorithm::offline_sample(VERTEXTYPE vertex)
 {
 	SAMPLE sample_vertex;
-	int vertexes = g.get_vertex_number();
+	int vertexes = static_cast<int>(g.get_vertex_number());
 	this->r = (int)floor(log2(vertexes));
 	generate_seeds(this->r, vertexes);
 	assert(seeds[0].size() == 1);
@@ -24,12 +24,12 @@ SAMPLE Algorithm::offline_sample(std::string vertex)
 	{
 		//For each node u, for all these sets Si, compute (wi, ¦Äi)
 		std::set<int>::iterator it = seeds[i].begin();
-		std::string min_node = std::to_string(*it);
+		VERTEXTYPE min_node = *it;
 		int min = g.bfs(vertex, min_node);
 
 		for (++it; it != seeds[i].end(); it++)
 		{
-			std::string node = std::to_string(*it);
+			VERTEXTYPE node = *it;
 			int distance = g.bfs(vertex, node);
 			if (min > distance)
 			{
@@ -51,7 +51,7 @@ SAMPLE Algorithm::offline_sketch()
 	return SAMPLE();
 }
 
-DISTANCE Algorithm::online_common_seed(std::string u, std::string v)
+DISTANCE Algorithm::online_common_seed(VERTEXTYPE u, VERTEXTYPE v)
 {
 	return DISTANCE();
 }
@@ -61,7 +61,7 @@ std::string Algorithm::sample_to_string(SAMPLE& sample)
 	std::string str = "";
 	for (SAMPLE::iterator it = sample.begin(); it != sample.end(); it++)
 	{
-		str.append((*it).first);
+		str.append(std::to_string((*it).first));
 		str.append(",");
 		str.append(std::to_string((*it).second));
 		str.append(" ");

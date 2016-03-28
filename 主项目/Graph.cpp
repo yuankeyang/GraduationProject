@@ -24,25 +24,25 @@ Graph::Graph(bool is_directed)
 	directed = is_directed;
 }
 
-void Graph::insert_vertex(std::string& id)
+void Graph::insert_vertex(VERTEXTYPE& id)
 {
 	Vertex::ConstructionToken c;
 	Vertex v{ c };
 	insert_vertex(id, v);
 }
 
-int Graph::get_vertex_number()
+std::size_t Graph::get_vertex_number()
 {
 	return vertexes.size();
 }
 
-void Graph::insert_vertex(std::string& id, Vertex& v)
+void Graph::insert_vertex(VERTEXTYPE& id, Vertex& v)
 {
-	std::pair<std::string, Vertex> temp(id, v);
+	std::pair<VERTEXTYPE, Vertex> temp(id, v);
 	vertexes.insert(temp);
 }
 
-void Graph::insert_edge(std::string& node, std::string& new_edge)
+void Graph::insert_edge(VERTEXTYPE& node, VERTEXTYPE& new_edge)
 {
 	if (node == new_edge)
 		return;
@@ -51,7 +51,7 @@ void Graph::insert_edge(std::string& node, std::string& new_edge)
 	auto it1 = vertexes.find(node);
 	//检查目的节点是否存在，否则插入新节点
 	this->insert_vertex(new_edge);
-	std::pair<boost::unordered_map<std::string, Edge>::iterator, bool> ret = it1->second.insert_edge(new_edge);
+	std::pair<boost::unordered_map<VERTEXTYPE, Edge>::iterator, bool> ret = it1->second.insert_edge(new_edge);
 	//如果是无向图
 	if (!directed) 
 	{
@@ -62,14 +62,14 @@ void Graph::insert_edge(std::string& node, std::string& new_edge)
 		edges += 1;
 }
 /*插入边*/
-void Graph::insert_edge(std::string& node, std::string& new_edge, EDGE_DATE_TYPE& weight)
+void Graph::insert_edge(VERTEXTYPE& node, VERTEXTYPE& new_edge, EDGE_DATE_TYPE& weight)
 {
 	if (node == new_edge)
 		return;
 	this->insert_vertex(node);
 	this->insert_vertex(new_edge);
 	auto it = vertexes.find(node);
-	std::pair<boost::unordered_map<std::string, Edge>::iterator, bool> ret = it->second.insert_edge(new_edge,weight);
+	std::pair<boost::unordered_map<VERTEXTYPE, Edge>::iterator, bool> ret = it->second.insert_edge(new_edge,weight);
 	if (!directed)
 	{
 		auto it1 = vertexes.find(new_edge);
@@ -79,7 +79,7 @@ void Graph::insert_edge(std::string& node, std::string& new_edge, EDGE_DATE_TYPE
 		edges += 1;
 }
 /*移除边*/
-void Graph::remove_edge(std::string& node, std::string& edge)
+void Graph::remove_edge(VERTEXTYPE& node, VERTEXTYPE& edge)
 {
 	auto it = vertexes.find(node);
 	if (it == vertexes.end())
@@ -91,7 +91,7 @@ void Graph::remove_edge(std::string& node, std::string& edge)
 /*载输出流，用于打印输出图*/
 std::ostream& operator<<(std::ostream& out, const Graph& g)
 {
-	std::vector<std::string> end_points;
+	std::vector<VERTEXTYPE> end_points;
 	for (auto& pair : g.vertexes)
 	{
 		end_points = pair.second.copy_edges();
@@ -107,7 +107,7 @@ std::ostream& operator<<(std::ostream& out, const Graph& g)
 /*打印图*/
 void Graph::print_graph() const
 {
-	std::vector<std::string> end_points;
+	std::vector<VERTEXTYPE> end_points;
 	for (auto& pair : vertexes)
 	{
 		end_points = pair.second.copy_edges();
@@ -133,22 +133,22 @@ void Graph::read_adjacency_list_rel(std::string& file)
 			continue;
 		}
 		std::vector<std::string> elems = Helper::split(str,' ');
-		const int size = elems.size();
+		const int size = static_cast<int>(elems.size());
 		if (size > 0)
 		{
-			std::string& from = elems[0];
+			VERTEXTYPE from = std::stoi(elems[0]);
 			for (int i = 1; i < size; i++)
 			{
-				std::string& to = elems[i];
+				VERTEXTYPE to = std::stoi(elems[i]);
 				EDGE_DATE_TYPE weight = random(100);
 				this->insert_edge(from, to, weight);
-				printf("insert edge(%s, %s), weight(%d)\n", from.c_str(), to.c_str(), weight);
+				printf("insert edge(%d, %d), weight(%d)\n", from, to, weight);
 			}
 		}
 	}
 }
 /*获取边的权*/
-EDGE_DATE_TYPE Graph::get_weight(std::string& from, std::string& to)
+EDGE_DATE_TYPE Graph::get_weight(VERTEXTYPE& from, VERTEXTYPE& to)
 {
 	if (from == to)
 		return 0;
@@ -164,13 +164,13 @@ void print_graph(const Graph& G)
 }
 
 //BFS算法实现
-EDGE_DATE_TYPE Graph::bfs(std::string& from, std::string& to)
+EDGE_DATE_TYPE Graph::bfs(VERTEXTYPE& from, VERTEXTYPE& to)
 {
 	if (from == to)
 		return 0;
-	boost::unordered_map<std::string,std::string> flaged;
-	std::queue<std::string> queue;
-	std::pair<std::string, std::string> temp(from, "");
+	boost::unordered_map<VERTEXTYPE, VERTEXTYPE> flaged;
+	std::queue<VERTEXTYPE> queue;
+	std::pair<VERTEXTYPE, VERTEXTYPE> temp(from, from);
 	flaged.insert(temp);
 	queue.push(from);
 	while (!queue.empty())
@@ -184,7 +184,7 @@ EDGE_DATE_TYPE Graph::bfs(std::string& from, std::string& to)
 			auto item = sub_vertexes[i];
 			if (item == to)
 			{
-				std::string temp = it;
+				VERTEXTYPE temp = it;
 				EDGE_DATE_TYPE temp_weight = get_weight(temp, to);
 				std::cout << "bfs(" << from << ", " << to << "):" 
 					<< to << "<-(" << temp_weight << ")-";
@@ -192,7 +192,7 @@ EDGE_DATE_TYPE Graph::bfs(std::string& from, std::string& to)
 				weight += temp_weight;
 				while (temp != from)
 				{
-					std::string next = flaged[temp];
+					VERTEXTYPE next = flaged[temp];
 					temp_weight = get_weight(next, temp);
 					std::cout << temp << "<-(" << temp_weight << ")-";
 					weight += temp_weight;
@@ -206,7 +206,7 @@ EDGE_DATE_TYPE Graph::bfs(std::string& from, std::string& to)
 				continue;
 			else
 			{
-				std::pair<std::string, std::string> temp(item, it);
+				std::pair<VERTEXTYPE, VERTEXTYPE> temp(item, it);
 				flaged.insert(temp);
 				queue.push(item);
 			}

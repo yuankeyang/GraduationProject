@@ -3,20 +3,20 @@
 #include "Vertex.h"
 #include "Edge.h"
 
-using edge_pair = std::pair<std::string, Edge>;
+using edge_pair = std::pair<VERTEXTYPE, Edge>;
 
 Vertex::Vertex(const ConstructionToken &)
 {
 }
 
-std::pair<boost::unordered_map<std::string, Edge>::iterator, bool> Vertex::insert_edge(const std::string & end_point)
+std::pair<boost::unordered_map<VERTEXTYPE, Edge>::iterator, bool> Vertex::insert_edge(const VERTEXTYPE & end_point)
 {
 	Edge new_edge{ Edge::ConstructionToken{} };
 	edge_pair temp(end_point, new_edge);
 	return edges.insert(temp);
 }
 
-std::pair<boost::unordered_map<std::string, Edge>::iterator, bool> Vertex::insert_edge(const std::string & end_point, EDGE_DATE_TYPE& weight)
+std::pair<boost::unordered_map<VERTEXTYPE, Edge>::iterator, bool> Vertex::insert_edge(const VERTEXTYPE & end_point, EDGE_DATE_TYPE& weight)
 {
 	Edge new_edge{ Edge::ConstructionToken{} };
 	new_edge.set_weight(weight);
@@ -24,14 +24,14 @@ std::pair<boost::unordered_map<std::string, Edge>::iterator, bool> Vertex::inser
 	return edges.insert(temp);
 }
 
-void Vertex::remove_edge(const std::string & edge)
+void Vertex::remove_edge(const VERTEXTYPE & edge)
 {
 	edges.erase(edge);
 }
 
-const std::vector<std::string> Vertex::copy_edges() const
+const std::vector<VERTEXTYPE> Vertex::copy_edges() const
 {
-	std::vector<std::string> keys;
+	std::vector<VERTEXTYPE> keys;
 	for (auto& pair : edges)
 	{
 		keys.push_back(pair.first);
@@ -39,7 +39,7 @@ const std::vector<std::string> Vertex::copy_edges() const
 	return keys;
 }
 
-EDGE_DATE_TYPE Vertex::get_weight(std::string& v)
+EDGE_DATE_TYPE Vertex::get_weight(VERTEXTYPE& v)
 {
 	auto it = edges.find(v);
 	if (it == edges.end())
