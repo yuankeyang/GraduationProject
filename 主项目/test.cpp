@@ -41,5 +41,5 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 	std::cout << "运行时间：" << exeTm.GetTmStr() << std::endl;
-	return 0;
+	return EXIT_SUCCESS;
 }

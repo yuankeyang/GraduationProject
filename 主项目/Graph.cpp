@@ -51,16 +51,22 @@ void Graph::insert_edge(VERTEXTYPE& node, VERTEXTYPE& new_edge)
 	auto it1 = vertexes.find(node);
 	//检查目的节点是否存在，否则插入新节点
 	this->insert_vertex(new_edge);
+	auto it2 = vertexes.find(new_edge);
 	std::pair<boost::unordered_map<VERTEXTYPE, Edge>::iterator, bool> ret = it1->second.insert_edge(new_edge);
 	//如果是无向图
 	if (!directed) 
 	{
-		auto it2 = vertexes.find(new_edge);
 		ret = it2->second.insert_edge(node);
 	}
-	if (!ret.second)
+	if (ret.second)
+	{
 		edges += 1;
+		it1->second.out_degree += 1;
+		it2->second.in_degree += 1;
+	}
+	
 }
+
 /*插入边*/
 void Graph::insert_edge(VERTEXTYPE& node, VERTEXTYPE& new_edge, EDGE_DATE_TYPE& weight)
 {
@@ -68,24 +74,34 @@ void Graph::insert_edge(VERTEXTYPE& node, VERTEXTYPE& new_edge, EDGE_DATE_TYPE& 
 		return;
 	this->insert_vertex(node);
 	this->insert_vertex(new_edge);
-	auto it = vertexes.find(node);
-	std::pair<boost::unordered_map<VERTEXTYPE, Edge>::iterator, bool> ret = it->second.insert_edge(new_edge,weight);
+	auto it1 = vertexes.find(node);
+	auto it2 = vertexes.find(new_edge);
+	std::pair<boost::unordered_map<VERTEXTYPE, Edge>::iterator, bool> ret = it1->second.insert_edge(new_edge,weight);
 	if (!directed)
 	{
-		auto it1 = vertexes.find(new_edge);
-		ret = it1->second.insert_edge(node,weight);
+		ret = it2->second.insert_edge(node,weight);
 	}
-	if (ret.second)
+	if (ret.second) 
+	{
 		edges += 1;
+		it1->second.out_degree += 1;
+		it2->second.in_degree += 1;
+	}
+		
 }
 /*移除边*/
 void Graph::remove_edge(VERTEXTYPE& node, VERTEXTYPE& edge)
 {
-	auto it = vertexes.find(node);
-	if (it == vertexes.end())
+	auto it1 = vertexes.find(node);
+	auto it2 = vertexes.find(edge);
+	if (it1 == vertexes.end())
 		return;
-	it->second.remove_edge(edge);
+	it1->second.remove_edge(edge);
 	edges -= 1;
+	assert(it1->second.out_degree > 0);
+	it1->second.out_degree -= 1;
+	assert(it2->second.in_degree > 0);
+	it2->second.in_degree -= 1;
 }
 
 /*载输出流，用于打印输出图*/
@@ -228,4 +244,16 @@ Graph::ITR Graph::begin()
 Graph::ITR Graph::end()
 {
 	return this->vertexes.end();
+}
+
+int Graph::get_in_degree(VERTEXTYPE & v)
+{
+	auto it = vertexes.find(v);
+	return it->second.in_degree;
+}
+
+int Graph::get_out_degree(VERTEXTYPE & v)
+{
+	auto it = vertexes.find(v);
+	return it->second.out_degree;
 }

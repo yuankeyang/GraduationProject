@@ -15,7 +15,7 @@ public:
 		ConstructionToken() = default;
 		friend class Graph;
 	};
-
+	Vertex();
 	Vertex(const ConstructionToken &);
 
 	const std::vector<VERTEXTYPE> copy_edges() const;
@@ -23,6 +23,9 @@ public:
 	std::pair<boost::unordered_map<VERTEXTYPE, Edge>::iterator, bool> insert_edge(const VERTEXTYPE&, EDGE_DATE_TYPE& weight);
 	void remove_edge(const VERTEXTYPE&);
 	EDGE_DATE_TYPE get_weight(VERTEXTYPE&);
+	int in_degree;
+	int out_degree;
 private:
 	boost::unordered_map<VERTEXTYPE, Edge> edges;
+	
 };

@@ -5,8 +5,16 @@
 
 using edge_pair = std::pair<VERTEXTYPE, Edge>;
 
+Vertex::Vertex()
+{
+	in_degree = 0;
+	out_degree = 0;
+}
+
 Vertex::Vertex(const ConstructionToken &)
 {
+	in_degree = 0;
+	out_degree = 0;
 }
 
 std::pair<boost::unordered_map<VERTEXTYPE, Edge>::iterator, bool> Vertex::insert_edge(const VERTEXTYPE & end_point)
