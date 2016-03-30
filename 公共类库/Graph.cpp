@@ -5,6 +5,8 @@
 #include <queue>
 #include <cstdlib>
 #include <ctime>
+#include <Windows.h>
+#include <iomanip>
 #include "Graph.h"
 #include "Vertex.h"
 #include "Edge.h"
@@ -138,6 +140,7 @@ void Graph::print_graph() const
 /*从邻接表文件创建图，邻接表文件中可以以'#'添加注释行*/
 void Graph::read_adjacency_list_rel(std::string& file)
 {
+	std::cout << "从邻接表文件中读取图：\n";
 	std::ifstream ifs(file);
 	std::string str;
 	srand((int)time(0));
@@ -157,10 +160,20 @@ void Graph::read_adjacency_list_rel(std::string& file)
 				VERTEXTYPE to = std::stoi(elems[i]);
 				EDGE_DATE_TYPE weight = random(100) + 1;
 				this->insert_edge(from, to, weight);
-				printf("insert edge(%d, %d), weight(%d)\n", from, to, weight);
+				std::string str = "\rinsert edge(";
+				str.append(std::to_string(from));
+				str.append(", ");
+				str.append(std::to_string(to));
+				str.append("), weight(");
+				str.append(std::to_string(weight));
+				str.append(")");
+				std::cout << std::left << std::setw(20) << str;
 			}
 		}
 	}
+	std::cout << std::endl << "读取完毕！" << std::endl;
+	std::cout << "结点数：" << get_vertex_number() << std::endl;
+	std::cout << "边数：" << get_edges() << std::endl;
 }
 /*获取边的权*/
 EDGE_DATE_TYPE Graph::get_weight(VERTEXTYPE& from, VERTEXTYPE& to)
@@ -181,6 +194,12 @@ void print_graph(const Graph& G)
 //BFS算法实现
 EDGE_DATE_TYPE Graph::bfs(VERTEXTYPE& from, VERTEXTYPE& to)
 {
+	HANDLE hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD coord;
+	coord.X = 0;
+	coord.Y = 7;
+
 	if (from == to)
 		return 0;
 	boost::unordered_map<VERTEXTYPE, VERTEXTYPE> flaged;
@@ -201,19 +220,35 @@ EDGE_DATE_TYPE Graph::bfs(VERTEXTYPE& from, VERTEXTYPE& to)
 			{
 				VERTEXTYPE temp = it;
 				EDGE_DATE_TYPE temp_weight = get_weight(temp, to);
-				std::cout << "bfs(" << from << ", " << to << "):" 
-					<< to << "<-(" << temp_weight << ")-";
+				std::string str = "bfs(";
+				std::string from_str = std::to_string(from);
+				std::string to_str = std::to_string(to);
+				std::string weight_str = std::to_string(temp_weight);
+				str.append(from_str);
+				str.append(", ");
+				str.append(to_str);
+				str.append("):");
+				str.append(to_str);
+				str.append("<-(");
+				str.append(weight_str);
+				str.append(")-");
+				
 				EDGE_DATE_TYPE weight = 0;
 				weight += temp_weight;
 				while (temp != from)
 				{
 					VERTEXTYPE next = flaged[temp];
 					temp_weight = get_weight(next, temp);
-					std::cout << temp << "<-(" << temp_weight << ")-";
+					str.append(std::to_string(temp));
+					str.append("<-(");
+					str.append(std::to_string(temp_weight));
+					str.append(")-");
 					weight += temp_weight;
 					temp = next;
 				}
-				std::cout << from << std::endl;
+				str.append(from_str);
+				SetConsoleCursorPosition(hConsole, coord);
+				std::cout << std::left << std::setw(160) << str;
 				return weight;
 			}
 
