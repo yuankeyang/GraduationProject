@@ -58,16 +58,6 @@ SAMPLE Algorithm::offline_sample(VERTEXTYPE vertex)
 	return sample_vertex;
 }
 
-SAMPLE Algorithm::offline_sketch()
-{
-	return SAMPLE();
-}
-
-DISTANCE Algorithm::online_common_seed(VERTEXTYPE u, VERTEXTYPE v)
-{
-	return DISTANCE();
-}
-
 std::string Algorithm::sample_to_string(SAMPLE& sample)
 {
 	std::string str = "";
