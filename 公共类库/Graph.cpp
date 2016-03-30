@@ -194,12 +194,6 @@ void print_graph(const Graph& G)
 //BFSÀ„∑® µœ÷
 EDGE_DATE_TYPE Graph::bfs(VERTEXTYPE& from, VERTEXTYPE& to)
 {
-	/*HANDLE hConsole;
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD coord;
-	coord.X = 0;
-	coord.Y = 7;*/
-
 	if (from == to)
 		return 0;
 	boost::unordered_map<VERTEXTYPE, VERTEXTYPE> flaged;
@@ -220,43 +214,15 @@ EDGE_DATE_TYPE Graph::bfs(VERTEXTYPE& from, VERTEXTYPE& to)
 			{
 				VERTEXTYPE temp = it;
 				EDGE_DATE_TYPE temp_weight = get_weight(temp, to);
-				/*
-				std::string str = "bfs(";
-				std::string from_str = std::to_string(from);
-				std::string to_str = std::to_string(to);
-				std::string weight_str = std::to_string(temp_weight);
-				str.append(from_str);
-				str.append(", ");
-				str.append(to_str);
-				str.append("):");
-				str.append(to_str);
-				str.append("<-(");
-				str.append(weight_str);
-				str.append(")-");
-				*/
 				EDGE_DATE_TYPE weight = 0;
 				weight += temp_weight;
 				while (temp != from)
 				{
 					VERTEXTYPE next = flaged[temp];
 					temp_weight = get_weight(next, temp);
-					/*str.append(std::to_string(temp));
-					str.append("<-(");
-					str.append(std::to_string(temp_weight));
-					str.append(")-");*/
 					weight += temp_weight;
 					temp = next;
 				}
-				/*str.append(from_str);
-				SetConsoleCursorPosition(hConsole, coord);
-				std::cout << std::left << std::setw(160) << str;*/
-				std::string str = "\rbfs(";
-				str.append(std::to_string(from));
-				str.append(",");
-				str.append(std::to_string(to));
-				str.append("):");
-				str.append(std::to_string(weight));
-				std::cout << std::setw(20) << str;
 				return weight;
 			}
 

@@ -16,11 +16,6 @@ Algorithm::~Algorithm()
 
 SAMPLE Algorithm::offline_sample(VERTEXTYPE vertex)
 {
-	/*HANDLE hConsole;
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD coord;
-	coord.X = 0;
-	coord.Y = 9;*/
 	SAMPLE sample_vertex;
 	int vertexes = static_cast<int>(g.get_vertex_number());
 	this->r = (int)floor(log2(vertexes));
@@ -32,7 +27,6 @@ SAMPLE Algorithm::offline_sample(VERTEXTYPE vertex)
 		std::set<int>::iterator it = seeds[i].begin();
 		VERTEXTYPE min_node = *it;
 		int min = g.bfs(vertex, min_node);
-
 		for (++it; it != seeds[i].end(); it++)
 		{
 			VERTEXTYPE node = *it;
@@ -44,15 +38,6 @@ SAMPLE Algorithm::offline_sample(VERTEXTYPE vertex)
 			}
 		}
 		D* d = new D(min_node, min);
-		/*std::string str = "d";
-		str.append(std::to_string(i));
-		str.append("(");
-		str.append(std::to_string(min_node));
-		str.append(", ");
-		str.append(std::to_string(min));
-		str.append(")");
-		SetConsoleCursorPosition(hConsole, coord);
-		std::cout << std::left << std::setw(20) << str;*/
 		sample_vertex.push_back(*d);
 	}
 	return sample_vertex;
