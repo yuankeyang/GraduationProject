@@ -62,3 +62,14 @@ TEST(GraphTest, ReadAdjListTest)
 	g.read_adjacency_list_rel(file);
 	EXPECT_EQ(100, (int)g.get_vertex_number());
 }
+
+TEST(AlgorithmTest, OffLineSampleTest)
+{
+	Graph g(false);
+	std::string file = "../test.adjlist";
+	g.read_adjacency_list_rel(file);
+	Algorithm al(g);
+	VERTEXTYPE node = (g.begin())->first;
+	SAMPLE sample = al.offline_sample(node);
+	EXPECT_LE(0, sample.size());
+}

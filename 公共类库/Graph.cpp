@@ -159,14 +159,8 @@ void Graph::read_adjacency_list_rel(std::string& file)
 				VERTEXTYPE to = std::stoi(elems[i]);
 				EDGE_DATE_TYPE weight = random(100) + 1;
 				this->insert_edge(from, to, weight);
-				std::string str = "\rinsert edge(";
-				str.append(std::to_string(from));
-				str.append(", ");
-				str.append(std::to_string(to));
-				str.append("), weight(");
-				str.append(std::to_string(weight));
-				str.append(")");
-				std::cout << std::left << std::setw(20) << str;
+				std::cout << "\rinsert edge(" << from << ", "
+					<< to << "):" << weight;
 			}
 		}
 	}
