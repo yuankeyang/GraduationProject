@@ -13,18 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="测试文件">
-      <UniqueIdentifier>{aea0d52f-0ecf-4de8-bd97-1522ff72fa95}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Graph.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="Edge.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
+    <ClInclude Include="ExeTime.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Helper.h">
@@ -33,15 +33,18 @@
     <ClInclude Include="Algorithm.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ExeTime.h">
+    <ClInclude Include="Vertex.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Algorithm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="Edge.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Vertex.cpp">
+    <ClCompile Include="ExeTime.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Graph.cpp">
@@ -50,14 +53,8 @@
     <ClCompile Include="Helper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Algorithm.cpp">
+    <ClCompile Include="Vertex.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ExeTime.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>测试文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

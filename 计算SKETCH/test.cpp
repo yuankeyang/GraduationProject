@@ -1,15 +1,15 @@
 #include <iostream>
 #include <fstream>
-#include "Graph.h"
-#include "Algorithm.h"
-#include "ExeTime.h"
+#include <Graph.h>
+#include <Algorithm.h>
+#include <ExeTime.h>
 
 int main(int argc, char* argv[])
 {
-	std::string data_file = "facebook_combined.txt";
-	std::string sketch_file = "facebook_sketch.txt";
-	//std::string data_file = "test1.adjlist";
-	//std::string sketch_file = "test1_sketch.txt";
+	//std::string data_file = "facebook_combined.txt";
+	//std::string sketch_file = "facebook_sketch.txt";
+	std::string data_file = "test1.adjlist";
+	std::string sketch_file = "test1_sketch.txt";
 	printf("毕业设计:社交网络中基于隐私保护的好友推荐算法\n");
 	Graph g1(false);
 	g1.read_adjacency_list_rel(data_file);

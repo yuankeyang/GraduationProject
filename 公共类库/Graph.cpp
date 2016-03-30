@@ -66,7 +66,6 @@ void Graph::insert_edge(VERTEXTYPE& node, VERTEXTYPE& new_edge)
 	}
 	
 }
-
 /*≤Â»Î±ﬂ*/
 void Graph::insert_edge(VERTEXTYPE& node, VERTEXTYPE& new_edge, EDGE_DATE_TYPE& weight)
 {
@@ -156,7 +155,7 @@ void Graph::read_adjacency_list_rel(std::string& file)
 			for (int i = 1; i < size; i++)
 			{
 				VERTEXTYPE to = std::stoi(elems[i]);
-				EDGE_DATE_TYPE weight = random(100);
+				EDGE_DATE_TYPE weight = random(100) + 1;
 				this->insert_edge(from, to, weight);
 				printf("insert edge(%d, %d), weight(%d)\n", from, to, weight);
 			}
