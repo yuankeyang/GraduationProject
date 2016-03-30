@@ -1,5 +1,4 @@
 #include <iomanip>
-#include <Windows.h>
 #include "Algorithm.h"
 
 
@@ -17,12 +16,11 @@ Algorithm::~Algorithm()
 
 SAMPLE Algorithm::offline_sample(VERTEXTYPE vertex)
 {
-	HANDLE hConsole;
+	/*HANDLE hConsole;
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD coord;
 	coord.X = 0;
-	coord.Y = 9;
-
+	coord.Y = 9;*/
 	SAMPLE sample_vertex;
 	int vertexes = static_cast<int>(g.get_vertex_number());
 	this->r = (int)floor(log2(vertexes));
@@ -46,7 +44,7 @@ SAMPLE Algorithm::offline_sample(VERTEXTYPE vertex)
 			}
 		}
 		D* d = new D(min_node, min);
-		std::string str = "d";
+		/*std::string str = "d";
 		str.append(std::to_string(i));
 		str.append("(");
 		str.append(std::to_string(min_node));
@@ -54,7 +52,7 @@ SAMPLE Algorithm::offline_sample(VERTEXTYPE vertex)
 		str.append(std::to_string(min));
 		str.append(")");
 		SetConsoleCursorPosition(hConsole, coord);
-		std::cout << std::left << std::setw(20) << str;
+		std::cout << std::left << std::setw(20) << str;*/
 		sample_vertex.push_back(*d);
 	}
 	return sample_vertex;
