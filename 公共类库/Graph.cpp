@@ -259,3 +259,8 @@ int Graph::get_out_degree(VERTEXTYPE & v)
 	auto it = vertexes.find(v);
 	return it->second.out_degree;
 }
+
+bool Graph::is_directed()
+{
+	return directed;
+}

@@ -61,6 +61,9 @@ TEST(GraphTest, ReadAdjListTest)
 	std::string file = "../test.adjlist";
 	g.read_adjacency_list_rel(file);
 	EXPECT_EQ(100, (int)g.get_vertex_number());
+	int v1 = 1;
+	int v151 = 151;
+	std::cout << "d(1, 151):" << g.get_weight(v1, v151) << std::endl;
 }
 
 TEST(AlgorithmTest, OffLineSampleTest)
@@ -72,4 +75,23 @@ TEST(AlgorithmTest, OffLineSampleTest)
 	VERTEXTYPE node = (g.begin())->first;
 	SAMPLE sample = al.offline_sample(node);
 	EXPECT_LE(0, sample.size());
+}
+
+TEST(AlgorithmTest, EstimateDistanceTest)
+{
+	Algorithm al;
+	std::string sketch_file = "../test1_sketch.txt";
+	al.read_sketchs(sketch_file);
+	int d = al.estimate_distance(1, 151);
+	std::cout << "d(1, 151) = " << d << std::endl;
+}
+
+TEST(AlgorithmTest, CalculateClosenessTest)
+{
+	Algorithm al;
+	std::string sketch_file = "../test1_sketch.txt";
+	al.read_sketchs(sketch_file);
+	double closeness = al.calculate_closeness(1, 151);
+	std::cout << "S(1,151) = " << closeness << std::endl;
+	EXPECT_EQ(0, al.calculate_closeness(151, 151));
 }

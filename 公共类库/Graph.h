@@ -30,7 +30,7 @@ public:
 	//如果是无向图的话，度为in_degree + out_degree
 	int get_in_degree(VERTEXTYPE& v);
 	int get_out_degree(VERTEXTYPE& v);
-
+	bool is_directed();
 protected:
 	void insert_vertex(VERTEXTYPE&, Vertex&);
 private:
