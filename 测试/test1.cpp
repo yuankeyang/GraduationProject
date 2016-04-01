@@ -58,9 +58,9 @@ TEST(GraphTest, UndirectedGraphTest)
 TEST(GraphTest, ReadAdjListTest)
 {
 	Graph g(false);
-	std::string file = "../test.adjlist";
+	std::string file = "../test1.adjlist";
 	g.read_adjacency_list_rel(file);
-	EXPECT_EQ(100, (int)g.get_vertex_number());
+	EXPECT_EQ(200, (int)g.get_vertex_number());
 	int v1 = 1;
 	int v151 = 151;
 	std::cout << "d(1, 151):" << g.get_weight(v1, v151) << std::endl;
@@ -69,7 +69,7 @@ TEST(GraphTest, ReadAdjListTest)
 TEST(AlgorithmTest, OffLineSampleTest)
 {
 	Graph g(false);
-	std::string file = "../test.adjlist";
+	std::string file = "../test1.adjlist";
 	g.read_adjacency_list_rel(file);
 	Algorithm al(g);
 	VERTEXTYPE node = (g.begin())->first;

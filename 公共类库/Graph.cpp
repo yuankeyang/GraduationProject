@@ -154,6 +154,7 @@ void Graph::read_adjacency_list_rel(std::string& file)
 		if (size > 0)
 		{
 			VERTEXTYPE from = std::stoi(elems[0]);
+			this->insert_vertex(from);
 			for (int i = 1; i < size; i++)
 			{
 				VERTEXTYPE to = std::stoi(elems[i]);

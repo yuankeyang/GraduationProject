@@ -195,6 +195,9 @@ double Algorithm::calculate_closeness(VERTEXTYPE v, VERTEXTYPE u)
 std::set<CLOSENESS, Algorithm::cmpStruct> Algorithm::get_recommend(VERTEXTYPE & node)
 {
 	std::set<CLOSENESS, cmpStruct> set;
+	if (map.find(node) == map.end())
+		return set;
+
 	for (auto itr = map.begin(); itr != map.end(); itr++)
 	{
 		double closeness = calculate_closeness(node, itr->first);
