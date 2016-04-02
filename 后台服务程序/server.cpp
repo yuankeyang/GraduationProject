@@ -1,13 +1,3 @@
-//
-// server.cpp
-// ~~~~~~~~~~
-//
-// Copyright (c) 2003-2015 Christopher M. Kohlhoff (chris at kohlhoff dot com)
-//
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
-
 #include <array>
 #include <cstdlib>
 #include <iostream>
@@ -25,6 +15,7 @@ using boost::asio::ip::tcp;
 class handler_allocator
 {
 public:
+	
 	handler_allocator()
 		: in_use_(false)
 	{
@@ -114,9 +105,11 @@ class session
 	: public std::enable_shared_from_this<session>
 {
 public:
+
 	session(tcp::socket socket)
 		: socket_(std::move(socket))
 	{
+		memset(data_, ' ', DATA_SIZE);
 	}
 
 	void start()
@@ -125,6 +118,7 @@ public:
 	}
 
 private:
+	static const int DATA_SIZE = 64;
 	void do_read()
 	{
 		auto self(shared_from_this());
@@ -134,6 +128,13 @@ private:
 		{
 			if (!ec)
 			{
+				
+				char* dst = new char[length + 1];
+				strncpy_s(dst,length + 1, data_, length);
+				dst[length] = '\0';
+				std::string data(dst);
+				//std::cout.write(data_, length);
+				std::cout << data << std::endl;
 				do_write(length);
 			}
 		}));
@@ -157,7 +158,7 @@ private:
 	tcp::socket socket_;
 
 	// Buffer used to store data received from the client.
-	std::array<char, 1024> data_;
+	char data_[DATA_SIZE];
 
 	// The allocator to use for handler-based custom memory allocation.
 	handler_allocator allocator_;
@@ -170,6 +171,7 @@ public:
 		: acceptor_(io_service, tcp::endpoint(tcp::v4(), port)),
 		socket_(io_service)
 	{
+		std::cout << "服务器启动......正在监听端口:" << port << std::endl;
 		do_accept();
 	}
 
@@ -181,6 +183,7 @@ private:
 		{
 			if (!ec)
 			{
+				std::cout << "一个客户端连接成功！\n";
 				std::make_shared<session>(std::move(socket_))->start();
 			}
 
@@ -196,14 +199,10 @@ int main(int argc, char* argv[])
 {
 	try
 	{
-		if (argc != 2)
-		{
-			std::cerr << "Usage: server <port>\n";
-			return 1;
-		}
+		const int port = 3200;
 
 		boost::asio::io_service io_service;
-		server s(io_service, std::atoi(argv[1]));
+		server s(io_service, port);
 		io_service.run();
 	}
 	catch (std::exception& e)
@@ -211,5 +210,5 @@ int main(int argc, char* argv[])
 		std::cerr << "Exception: " << e.what() << "\n";
 	}
 
-	return 0;
+	return EXIT_SUCCESS;
 }

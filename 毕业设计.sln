@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AES测试", "AES测试\AES�
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "后台服务程序", "后台服务程序\后台服务程序.vcxproj", "{20680B2B-57CF-4D0A-A3A0-AA2549CF794A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "客户端程序", "客户端程序\客户端程序.vcxproj", "{12457063-B03C-422D-83DD-4BE462B213B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,16 @@ Global
 		{20680B2B-57CF-4D0A-A3A0-AA2549CF794A}.Release|x64.Build.0 = Release|x64
 		{20680B2B-57CF-4D0A-A3A0-AA2549CF794A}.Release|x86.ActiveCfg = Release|Win32
 		{20680B2B-57CF-4D0A-A3A0-AA2549CF794A}.Release|x86.Build.0 = Release|Win32
+		{12457063-B03C-422D-83DD-4BE462B213B4}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{12457063-B03C-422D-83DD-4BE462B213B4}.Debug|x64.ActiveCfg = Debug|x64
+		{12457063-B03C-422D-83DD-4BE462B213B4}.Debug|x64.Build.0 = Debug|x64
+		{12457063-B03C-422D-83DD-4BE462B213B4}.Debug|x86.ActiveCfg = Debug|Win32
+		{12457063-B03C-422D-83DD-4BE462B213B4}.Debug|x86.Build.0 = Debug|Win32
+		{12457063-B03C-422D-83DD-4BE462B213B4}.Release|Any CPU.ActiveCfg = Release|Win32
+		{12457063-B03C-422D-83DD-4BE462B213B4}.Release|x64.ActiveCfg = Release|x64
+		{12457063-B03C-422D-83DD-4BE462B213B4}.Release|x64.Build.0 = Release|x64
+		{12457063-B03C-422D-83DD-4BE462B213B4}.Release|x86.ActiveCfg = Release|Win32
+		{12457063-B03C-422D-83DD-4BE462B213B4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
