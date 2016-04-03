@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 	//
 	std::cout << "Cipher Text (" << ciphertext.size() << " bytes)" << std::endl;
 
-	for (int i = 0; i < ciphertext.size(); i++) {
+	for (int i = 0; i < static_cast<int>(ciphertext.size()); i++) {
 
 		std::cout << "0x" << std::hex << (0xFF & static_cast<byte>(ciphertext[i])) << " ";
 	}

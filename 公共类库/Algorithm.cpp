@@ -109,12 +109,12 @@ int Algorithm::estimate_distance(VERTEXTYPE v, VERTEXTYPE u)
 	SAMPLE& v_sketch = map[v];
 	SAMPLE& u_sketch = map[u];
 	boost::unordered_map<VERTEXTYPE, int> map;
-	for (int i = 0; i < u_sketch.size(); i++)
+	for (int i = 0; i < static_cast<int>(u_sketch.size()); i++)
 	{
 		map.insert(u_sketch[i]);
 	}
 	int distance = -1;
-	for (int i = 0; i < v_sketch.size(); i++)
+	for (int i = 0; i < static_cast<int>(v_sketch.size()); i++)
 	{
 		VERTEXTYPE node = v_sketch[i].first;
 		auto itr = map.find(node);

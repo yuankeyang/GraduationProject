@@ -5,8 +5,19 @@
 #include <type_traits>
 #include <utility>
 #include <boost/asio.hpp>
+#include <boost/unordered_map.hpp>
+#include <Graph.h>
+#include <fstream>
+#include <iomanip>
+#include <Algorithm.h>
+#include <Helper.h>
+#include <ExeTime.h>
+
 
 using boost::asio::ip::tcp;
+
+Algorithm al;
+
 
 // Class to manage the memory to be used for handler-based custom allocation.
 // It contains a single block of memory which may be returned for allocation
@@ -110,6 +121,7 @@ public:
 		: socket_(std::move(socket))
 	{
 		memset(data_, ' ', DATA_SIZE);
+		
 	}
 
 	void start()
@@ -133,17 +145,37 @@ private:
 				strncpy_s(dst,length + 1, data_, length);
 				dst[length] = '\0';
 				std::string data(dst);
-				//std::cout.write(data_, length);
-				std::cout << data << std::endl;
-				do_write(length);
+				std::vector<std::string> args = Helper::split(data, ' ');
+				memset(data_, ' ', DATA_SIZE);
+				if (args.size() != 2)
+					do_write("参数错误！");
+				else
+				{
+					VERTEXTYPE id = std::stoi(args[0]);
+					int number = std::stoi(args[1]);
+					std::cout << "id = " << id << ", number = " << number << std::endl;
+					auto candiates = al.get_recommend(id);
+					int i = 0;
+					std::string result = "";
+					for (auto itr = candiates.begin();
+					i < number && itr != candiates.end(); itr++, i++)
+					{
+						result += "Vertex:";
+						result += std::to_string(itr->first);
+						result += ", closeness:";
+						result += std::to_string((int)std::floor(itr->second));
+						result += "\n";
+					}
+					do_write(result);
+				}
 			}
 		}));
 	}
 
-	void do_write(std::size_t length)
+	void do_write(std::string msg)
 	{
 		auto self(shared_from_this());
-		boost::asio::async_write(socket_, boost::asio::buffer(data_, length),
+		boost::asio::async_write(socket_, boost::asio::buffer(msg),
 			make_custom_alloc_handler(allocator_,
 				[this, self](boost::system::error_code ec, std::size_t /*length*/)
 		{
@@ -153,14 +185,8 @@ private:
 			}
 		}));
 	}
-
-	// The socket used to communicate with the client.
 	tcp::socket socket_;
-
-	// Buffer used to store data received from the client.
 	char data_[DATA_SIZE];
-
-	// The allocator to use for handler-based custom memory allocation.
 	handler_allocator allocator_;
 };
 
@@ -172,6 +198,9 @@ public:
 		socket_(io_service)
 	{
 		std::cout << "服务器启动......正在监听端口:" << port << std::endl;
+		std::string sketch_file = "../facebook_sketch.txt";
+		//std::string sketch_file = "../test1_sketch.txt";
+		al.read_sketchs(sketch_file);
 		do_accept();
 	}
 
