@@ -11,12 +11,12 @@
 #include <iomanip>
 #include <Algorithm.h>
 #include <Helper.h>
-#include <ExeTime.h>
-
+#include <AESClass.h>
 
 using boost::asio::ip::tcp;
 
 Algorithm al;
+AESClass aes;
 
 
 // Class to manage the memory to be used for handler-based custom allocation.
@@ -166,7 +166,7 @@ private:
 						result += std::to_string((int)std::floor(itr->second));
 						result += "\n";
 					}
-					do_write(result);
+					do_write(aes.encryp(result));
 				}
 			}
 		}));

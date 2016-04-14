@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
 	try
 	{
 		static const int max_line_length = 80;
-		static const int DATA_SIZE = 2048;
+		static const int DATA_SIZE = 4096;
 		const int port = 3200;
 		std::string host = "127.0.0.1";
 		boost::asio::io_service io_service;
@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 			std::cout << "连接" << host << ":" << port << "成功！\n";
 			std::cout << "好友推荐算法客户端:\n";
 			std::cout << "命令格式:>> id number" << std::endl;
-			std::cout << "id 为负数时退出程序" << std::endl;
+			std::cout << "number推荐小于等于100" << std::endl;
 			std::cout << "-------------------" << std::endl;
 		}
 		else 

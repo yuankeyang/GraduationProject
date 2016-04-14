@@ -38,5 +38,4 @@ private:
 	long int edges;
 	bool directed;
 };
-
 void print_graph(const Graph&);
