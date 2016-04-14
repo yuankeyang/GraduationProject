@@ -154,6 +154,9 @@
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="A Sketch-Based Distance Oracle for Web-Scale Graphs.docx" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

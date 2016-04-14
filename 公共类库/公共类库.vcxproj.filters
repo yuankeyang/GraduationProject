@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="doc">
+      <UniqueIdentifier>{0375a943-6ea9-4f08-a106-ef03c9f81ba6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -58,5 +61,10 @@
     <ClCompile Include="AESClass.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="A Sketch-Based Distance Oracle for Web-Scale Graphs.docx">
+      <Filter>doc</Filter>
+    </None>
   </ItemGroup>
 </Project>
