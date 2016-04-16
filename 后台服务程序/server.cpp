@@ -166,7 +166,8 @@ private:
 						result += std::to_string((int)std::floor(itr->second));
 						result += "\n";
 					}
-					do_write(aes.encryp(result));
+					//do_write(aes.encryp(result));
+					do_write(result);
 				}
 			}
 		}));

@@ -1,8 +1,11 @@
 #include <iostream>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
+#include <AESClass.h>
 
 using boost::asio::ip::tcp;
+
+AESClass aes;
 
 int main(int argc, char* argv[])
 {
@@ -43,9 +46,14 @@ int main(int argc, char* argv[])
 			size_t length = socket.read_some(boost::asio::buffer(data), ec);
 			if (!ec && length > 0)
 			{
+				//char *dst = new char[length];
+				//strncpy_s(dst, length, data, length);
+				//std::string ciphertext(dst);
+				//std::cout << aes.decryp(ciphertext);
 				std::cout.write(data, length);
 				std::cout << std::endl;
 				std::cout << "--------------------\n";
+				//delete dst;
 			}
 		}
 	}
