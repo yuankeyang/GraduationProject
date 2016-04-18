@@ -18,7 +18,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="client.cpp">
+    <ClCompile Include="chat_client.cpp">
       <Filter>测试文件</Filter>
     </ClCompile>
   </ItemGroup>

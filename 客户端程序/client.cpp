@@ -1,11 +1,8 @@
 #include <iostream>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
-#include <AESClass.h>
 
 using boost::asio::ip::tcp;
-
-AESClass aes;
 
 int main(int argc, char* argv[])
 {
@@ -29,7 +26,7 @@ int main(int argc, char* argv[])
 			std::cout << "number推荐小于等于100" << std::endl;
 			std::cout << "-------------------" << std::endl;
 		}
-		else 
+		else
 		{
 			std::cout << "连接失败，错误信息：" << ec << std::endl;
 			return EXIT_SUCCESS;
@@ -46,14 +43,9 @@ int main(int argc, char* argv[])
 			size_t length = socket.read_some(boost::asio::buffer(data), ec);
 			if (!ec && length > 0)
 			{
-				//char *dst = new char[length];
-				//strncpy_s(dst, length, data, length);
-				//std::string ciphertext(dst);
-				//std::cout << aes.decryp(ciphertext);
 				std::cout.write(data, length);
 				std::cout << std::endl;
 				std::cout << "--------------------\n";
-				//delete dst;
 			}
 		}
 	}

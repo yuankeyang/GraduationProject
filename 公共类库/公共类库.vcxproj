@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClInclude Include="AESClass.h" />
     <ClInclude Include="Algorithm.h" />
+    <ClInclude Include="chat_message.hpp" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="ExeTime.h" />
     <ClInclude Include="Graph.h" />

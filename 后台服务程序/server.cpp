@@ -16,7 +16,7 @@
 using boost::asio::ip::tcp;
 
 Algorithm al;
-AESClass aes;
+//AESClass aes;
 
 
 // Class to manage the memory to be used for handler-based custom allocation.
@@ -26,7 +26,7 @@ AESClass aes;
 class handler_allocator
 {
 public:
-	
+
 	handler_allocator()
 		: in_use_(false)
 	{
@@ -121,7 +121,7 @@ public:
 		: socket_(std::move(socket))
 	{
 		memset(data_, ' ', DATA_SIZE);
-		
+
 	}
 
 	void start()
@@ -140,9 +140,9 @@ private:
 		{
 			if (!ec)
 			{
-				
+
 				char* dst = new char[length + 1];
-				strncpy_s(dst,length + 1, data_, length);
+				strncpy_s(dst, length + 1, data_, length);
 				dst[length] = '\0';
 				std::string data(dst);
 				std::vector<std::string> args = Helper::split(data, ' ');
@@ -167,7 +167,7 @@ private:
 						result += "\n";
 					}
 					//do_write(aes.encryp(result));
-					do_write(result);
+					do_write("dsf");
 				}
 			}
 		}));

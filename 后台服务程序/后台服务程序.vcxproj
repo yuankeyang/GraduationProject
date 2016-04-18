@@ -149,12 +149,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="server.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\公共类库\公共类库.vcxproj">
       <Project>{48088463-3477-4616-a1fc-a8502dc58acc}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="chat_server.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
